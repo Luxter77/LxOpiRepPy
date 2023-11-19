@@ -31,14 +31,13 @@ def clean(o: Any) -> Union[int, float, bool, dict, list]:
     """
     if isinstance(o, (Generator, list, tuple)):
         return list(clean(x) for x in o)
-    elif dataclasses.is_dataclass(o):
+    if dataclasses.is_dataclass(o):
         return clean(dataclasses.asdict(o))
-    elif isinstance(o, dict):
+    if isinstance(o, dict):
         return {(clean(k), clean(v)) for k, v in o.items()}
-    elif isinstance(o, (int, float, bool)) or (o is None):
+    if isinstance(o, (int, float, bool)) or (o is None):
         return o
-    else:
-        return str(o)
+    return str(o)
 
 def win_slug(fname: Union[str, os.PathLike], rep: str = '_') -> str:
     """
@@ -163,12 +162,17 @@ class LastTimeGetter:
             - dt.datetime: The last accessed time.
         """
         try:
-            self.last_time = dt.datetime.fromisoformat(json.load(open(self.fname,     'r', encoding='utf-8')))
-        except json.JSONDecodeError:
-            self.last_time = dt.datetime.fromisoformat(json.load(open(self.fname_bkp, 'r', encoding='utf-8')))
-        except FileNotFoundError:
-            self.last_time = dt.datetime.now()
+            self._get(self.fname)
+        except (json.JSONDecodeError, FileNotFoundError):
+            try:
+                self._get(self.fname_bkp)
+            except (json.JSONDecodeError, FileNotFoundError):
+                self.last_time = dt.datetime.now()
         return self.last_time
+
+    def _get(self, fdir: Union[os.PathLike, str]):
+        with open(fdir, 'r', encoding='utf-8') as file:
+            self.last_time = dt.datetime.fromisoformat(json.load(file))
 
     def set(self, time: dt.datetime = None):
         """
@@ -182,5 +186,7 @@ class LastTimeGetter:
         """
         if time is None:
             self.last_time = dt.datetime.now()
-        json.dump(self.last_time.isoformat(), open(self.fname,     'w', encoding='utf-8'))
-        json.dump(self.last_time.isoformat(), open(self.fname_bkp, 'w', encoding='utf-8'))
+        with open(self.fname, 'w', encoding='utf-8') as file:
+            json.dump(self.last_time.isoformat(), file)
+        with open(self.fname_bkp, 'w', encoding='utf-8') as bkp:
+            json.dump(self.last_time.isoformat(), bkp)
