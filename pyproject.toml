@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "LxOpiRepPy"
+version = "0.0.1a"
+authors = [{name = "Luxter77"}]
+description = "\"Luxter's Opinionated Repertoire for Python.\""
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+  'tqdm>=4.64.1',
+  'termcolor>=2.2.0',
+  'colorama>=0.4.6',
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/Luxter77/LxOpiRepPy"
+"Bug Tracker" = "https://github.com/Luxter77/LxOpiRepPy/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[project.optional-dependencies]
+dev = [
+    "pylint>=3.0.2",
+    "setuptools>=68",
+    "wheel",
+]
+
