@@ -1,5 +1,7 @@
 # LxOpiRepPy
 
+![Pylint Check](https://github.com/Luxter77/LxOpiRepPy/actions/workflows/pylint-main_release.yml/badge.svg)
+
 Luxter's Opinionated Repertoire for Python.
 
 LxOpiRepPy is a Python package created to house a collection of commonly used functions and boilerplate code, curated by us. This package aims to provide a convenient repository for frequently employed utilities, ranging from logging facilities, multiprocessing shortcuts, and database interfaces to pre-written code for formatting various data formats like JSON files, pickles, and making requests to external REST APIs.
