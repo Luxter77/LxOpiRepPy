@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LxOpiRepPy"
-version = "0.0.1a"
+version = "0.0.2a"
 authors = [{name = "Luxter77"}]
 description = "\"Luxter's Opinionated Repertoire for Python.\""
 classifiers = [
@@ -17,6 +17,9 @@ dependencies = [
   'tqdm>=4.64.1',
   'termcolor>=2.2.0',
   'colorama>=0.4.6',
+  'stem>=1.8.2',
+  'fake_useragent>=1.3.0',
+  'requests>=2.31.0',
 ]
 
 [project.readme]
