@@ -256,7 +256,7 @@ class LastTimeMemoryStore:
             try:
                 d = self._get(self.fname_bkp)
             except (FileNotFoundError, json.JSONDecodeError):
-                return dict()
+                return {}
 
         self.memory = dict((int(k), dt.datetime.fromisoformat(v)) for k, v in d.items())
 
