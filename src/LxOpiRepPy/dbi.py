@@ -10,5 +10,7 @@ class QueryReturnValue:
     ress_len:   int
     err_:       Exception
 
-# TODO: add generic database template
+class DBITemplate:
+    ...
+
 # TODO: add spesific database type interfaces gated behind optional requirements

@@ -1,6 +1,8 @@
 from typing import Any, Callable, Optional
 
 import requests as re
+from socket import gethostbyname
+
 from fake_useragent import UserAgent
 from stem import Signal
 from stem.control import Controller
@@ -37,9 +39,7 @@ class AnonimousEngine:
         _retry_loop(func: Callable[[Any], requests.Response], *args, **kwargs) -> requests.Response:
             Internal method implementing a retry loop for request execution in case of exceptions.
     """
-    def __init__(self,
-                 password: str = "password",
-                 s_conf:   str = "socks5://localhost:9050"):
+    def __init__(self, hostname: str = "localhost", password: str = "password", c_port: int = 9051):
         """
         Initializes the AnonimousEngine with the provided password and Tor SOCKS proxy configuration.
 
@@ -47,15 +47,16 @@ class AnonimousEngine:
             password (str): Password for authenticating with the Tor controller. Defaults to "password".
             s_conf (str): Configuration for the Tor SOCKS proxy. Defaults to "socks5://localhost:9050".
         """
+        s_conf      = f"socks5://{hostname}:9050"
         self.s_conf = {"http": s_conf, "https": s_conf}
 
-        self.controller = Controller.from_port()
+        self.controller = Controller.from_port(address=gethostbyname(hostname), port=c_port)
         self.controller.authenticate(password=password)
 
         self.session: re.Session      = None
         self.eip: Optional[Exception] = None
         self.cip: str                 = ""
-
+       
         self.get_new_ip()
 
     def get_new_ip(self) -> None:
