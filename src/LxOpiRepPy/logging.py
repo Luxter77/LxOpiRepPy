@@ -103,6 +103,5 @@ class TqdmLoggingHandler(logging.Handler):
         try:
             msg = self.format(record)
             tqdm.write(msg)
-            self.flush()
         except Exception: # pylint: disable=broad-exception-caught
             self.handleError(record)
